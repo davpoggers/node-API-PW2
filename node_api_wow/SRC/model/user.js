@@ -10,18 +10,6 @@ const user = new EntitySchema({
         typeUser:{type:"enum",enum:["admin","comum"],nullable:false},
         createdAt:{type:"datetime",nullable:false,default:()=>"CURRENT_TIMESTAMP"},
         deletedAt:{type:"datetime",nullable:true}
-    },
-
-    name:"User",
-    tableName:"Ator",
-    columns:{
-        id:{primary:true,type:"int",generated:"increment"},
-        name:{type:"varchar",lenght:50,nullable:false},
-        password:{type:"varchar",lenght:50,nullable:false},
-        email:{type:"varchar",lenght:50,nullable:false},
-        typeUser:{type:"enum",enum:["admin","comum"],nullable:false},
-        createdAt:{type:"datetime",nullable:false,default:()=>"CURRENT_TIMESTAMP"},
-        deletedAt:{type:"datetime",nullable:true}
     }
 });
 export default user;

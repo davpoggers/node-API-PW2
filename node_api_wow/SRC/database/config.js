@@ -8,7 +8,7 @@ const AppDataSource = new DataSource({
     username:"root",
     port: 3306,
     database:"projeto_api",
-    password:"etecembu@123",
+    password:"",
     entities:["src/model/*.js"],
     migrations:["src/database/migrations/*.cjs"]
 });
