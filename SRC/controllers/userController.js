@@ -3,7 +3,7 @@ import express from "express";
 const route = express.Router();
 
 route.post("/", (request, response) => {
-    return response.send("Deu certo yipee!");
+    return response.send("ebaaaaaaaa !");
 });
 
 export default route;
