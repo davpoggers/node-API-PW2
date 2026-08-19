@@ -6,4 +6,4 @@ route.post("/", (request, response) => {
     return response.send("Deu certo yipee!");
 });
 
-export default route;
+export default routes;

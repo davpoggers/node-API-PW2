@@ -1,4 +1,6 @@
 import express from 'express';
+import { AppDataSource } from "database/config.js"
+import routes from "./routes.js"
 
 const server = express();
 
