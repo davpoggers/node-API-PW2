@@ -7,6 +7,7 @@
   "type": "module",
   "main": "index.js",
   "scripts": {
+    "start": "node ./SRC/index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "create_migration": "npx typeorm -d ./src/database/config.js migration:generate ./src/database/migrations/db --outputJs",
     "execute_migration": "npx typeorm -d ./src/database/config.js migration:run"

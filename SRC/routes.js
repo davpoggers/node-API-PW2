@@ -1,7 +1,7 @@
 import express from "express";
-import userController from /.controllers/userController.js;
+import userController from "./controllers/User/userController.js";
 
-const routes = exxpress();
+const routes = express();
 
 routes.use("/User", userController);
 
