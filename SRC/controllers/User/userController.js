@@ -5,18 +5,38 @@ import user from "../../model/user.js";
 const route = express.Router();
 const userTable = AppDataSource.getRepository(user);
 
-route.post("/", (request, response) => {
+route.get("/", (request, response) => {
     return response.send("Deu certo yipee!");
 });
 
-route.post("/", (request, response) => {
+route.post("/", async (request, response) => {
     //nome, email, senha, tipo de usuário
     const { name, email, password, typeUser } = request.body;
 
-    const userdata = userTable.create({ name, email, password, typeUser });
-    userTable.save(userdata);
+    if (name.length < 2) {
+        return response.status(400).send("O nome deve conter mais de um caractere.");
+    }
 
-    console.log(name, email, password, typeUser);
+    if (!email.includes("@")) {
+        return response.status(400).send("O email deve conter @.");
+    }
+
+    if (password.length < 6) {
+        return response.status(400).send("A senha deve conter mais de 6 caracteres.");
+    }
+
+    if (typeUser.toLowerCase() !== "admin" && typeUser.toLowerCase() !== "comum") {
+        return response.status(400).send("Esse tipo de usuário é inválido.");
+    }
+
+    try{
+        const userdata = userTable.create({ name, email, password, typeUser });
+        await userTable.save(userdata);
+
+        return response.status(201).send("Usuário cadastrado com sucesso!");
+    } catch (error) {
+        return response.status(500).send("response" + error);
+    }
 });
 
 export default route;

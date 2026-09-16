@@ -1,4 +1,5 @@
 import "reflect-metadata";
+import user from "../model/user.js";
 import {DataSource} from "typeorm";
 
 
@@ -9,7 +10,7 @@ const AppDataSource = new DataSource({
     port: 3306,
     database:"projeto_api",
     password:"",
-    entities:["src/model/*.js"],
+    entities:[user],
     migrations:["src/database/migrations/*.cjs"]
 });
 export {AppDataSource};
