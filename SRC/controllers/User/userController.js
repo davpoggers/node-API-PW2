@@ -1,12 +1,14 @@
 import express from "express";
 import {AppDataSource} from "../../database/config.js";
 import user from "../../model/user.js";
+import {isNull} from "typeorm";
 
 const route = express.Router();
 const userTable = AppDataSource.getRepository(user);
 
-route.get("/", (request, response) => {
-    return response.send("Deu certo yipee!");
+route.get("/", async (request, response) => {
+    const users = await userTable.findBy({"typeUser": "comum", "deletedAt": isNull()});
+    return response.status(200).send({response: users});
 });
 
 route.post("/", async (request, response) => {
