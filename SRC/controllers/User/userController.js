@@ -1,13 +1,24 @@
 import express from "express";
 import {AppDataSource} from "../../database/config.js";
 import user from "../../model/user.js";
-import {isNull} from "typeorm";
+import {IsNull} from "typeorm";
 
 const route = express.Router();
 const userTable = AppDataSource.getRepository(user);
 
 route.get("/", async (request, response) => {
-    const users = await userTable.findBy({"typeUser": "comum", "deletedAt": isNull()});
+    const users = await userTable.findBy({"typeUser": "comum", "deletedAt": IsNull()});
+    return response.status(200).send({response: users});
+});
+
+route.get("/:termo", async (request, response) => {
+    const { termo } = request.params;
+    const users = await userTable.findBy({"typeUser": termo, "deletedAt": IsNull()});
+
+if (users.length < 1) {
+        return response.status(200).send({response: "Nenhum dado encontrado."});
+    }   
+
     return response.status(200).send({response: users});
 });
 
