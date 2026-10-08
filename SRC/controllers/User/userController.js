@@ -1,7 +1,7 @@
 import express from "express";
 import {AppDataSource} from "../../database/config.js";
 import user from "../../model/user.js";
-import {IsNull} from "typeorm";
+import {IsNull, Like} from "typeorm";
 
 const route = express.Router();
 const userTable = AppDataSource.getRepository(user);
@@ -13,7 +13,7 @@ route.get("/", async (request, response) => {
 
 route.get("/:termo", async (request, response) => {
     const { termo } = request.params;
-    const users = await userTable.findBy({"typeUser": termo, "deletedAt": IsNull()});
+    const users = await userTable.findBy({"typeUser": Like(`%${termo}%`), "deletedAt": IsNull()});
 
 if (users.length < 1) {
         return response.status(200).send({response: "Nenhum dado encontrado."});
@@ -50,6 +50,31 @@ route.post("/", async (request, response) => {
     } catch (error) {
         return response.status(500).send("response" + error);
     }
+});
+
+route.put("/", async (request, response) => {
+    const { name, email, password, typeUser } = request.body;
+    const { id } = request.params;
+
+    if (name.length < 2) {
+        return response.status(400).send("O nome deve conter mais de um caractere.");
+    }
+
+    if (!email.includes("@")) {
+        return response.status(400).send("O email deve conter @.");
+    }
+
+    if (password.length < 6) {
+        return response.status(400).send("A senha deve conter mais de 6 caracteres.");
+    }
+
+    if (typeUser.toLowerCase() !== "admin" && typeUser.toLowerCase() !== "comum") {
+        return response.status(400).send("Esse tipo de usuário é inválido.");
+    }
+
+    userTable.update({id}, {name, email, password, typeUser});
+
+    return response.status(200).send("Atualizado com sucesso!");
 });
 
 export default route;
