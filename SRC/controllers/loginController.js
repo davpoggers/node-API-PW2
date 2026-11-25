@@ -3,6 +3,7 @@ import { AppDataSource } from "../database/config.js";
 import user from "../model/user.js";
 import { IsNull } from "typeorm";
 import { generateNewPassword } from "../utils/login.js";
+import { generateToken } from "../utils/jwt.js"; 
 
 const route = express.Router();
 const userTable = AppDataSource.getRepository(user);
@@ -13,7 +14,12 @@ route.post("/", async (request, response) => {
     const userLogin = await userTable.findOneBy({ email, password, deletedAt: IsNull() });
 
     if (userLogin) {
-        return response.status(200).send({ message: "Login efetuado com sucesso" });
+        const token = generateToken({
+            user: userLogin.name,
+            email: userLogin.email,
+            typeUser: userLogin.typeUser
+        });
+        return response.status(200).send({ message: "Login efetuado com sucesso", token });
     } else {
         return response.status(401).send({ message: "Login invalido" });
     }
